@@ -40,7 +40,7 @@ const App: React.FC = () => {
   const handleFormSubmit = async (formData: FormDetails) => {
     setLoading(true);
     const response: Promise<object> = await createCall(formData);
-    if(response?.sid){
+    if(response?.sid!){
       setCallInitiated(true);
     }
     setLoading(false);
@@ -55,10 +55,10 @@ const App: React.FC = () => {
       ) : (
         callInitiated ? 
         <>
-          {!callStatus ? <p>Calling...</p> : null}
+          {!callStatus && <p>Calling...</p>}
           {attendance == undefined ? <p>Attendance: Unset</p> : attendance ? <p>User has Confirmed</p> : <p>User has declined</p>}
           {recordingUrl && <a href={recordingUrl}>Voice Mail</a>}
-          {callStatus && <p>{callStatus}</p>}
+          {callStatus && <p>Call Status: {callStatus}</p>}
         </> :<></>
       )}
 
