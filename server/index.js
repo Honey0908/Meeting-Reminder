@@ -1,7 +1,6 @@
 var express = require('express');
 const config = require('./config');
 const cors = require('cors');
-// const bodyParser = require('body-parser');
 const router = require('./src/router')
 
 
