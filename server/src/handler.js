@@ -59,15 +59,33 @@ exports.confirmAttendance = () => {
 // if user declines the attendance
 exports.declineAttendance = () => {
     const twiml = new VoiceResponse();
-    twiml.say('why');
+    twiml.say('We are sorry that you cannot attend the meeting. Your call will be forwarded to the manager for further discussion. Please Hold on the line.');
+    const forward = twiml.dial({ action: '/handle-forward', method: 'POST' });
+    forward.number(process.env.PROCESS_NUMBER);
+    return twiml.toString();
+}
+
+// handle forwarded call , if not completed then record voice message
+exports.handleForwardedCall = (dialCallStatus) => {
+    const twiml = new VoiceResponse();
+    if (dialCallStatus === "completed") {
+        twiml.say("happy to see the call is ended. Have a nice day!");
+        return twiml.toString();
+    }
+    twiml.say('Please leave a message after the beep.');
+    const voicemail = twiml.record({ action: '/handle-voicemail', method: 'POST', playBeep: true });
     twiml.hangup();
     return twiml.toString();
 }
 
-// invalid input (otherthan 1 or 2 key)
+// handle recorded voiceMail 
+exports.handleVoiceMail = (recordingUrl) => {
+    console.log('Recorded Voicemail URL:', recordingUrl);
+}
+
+// invalid input (otherthan 1 or 2 key press)
 exports.invalidInput = () => {
     const twiml = new VoiceResponse();
-
     twiml.say('Invalid Input, returning to the main menu');
     twiml.redirect('/welcome');
     return twiml.toString();

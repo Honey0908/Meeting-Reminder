@@ -1,5 +1,5 @@
 const Router = require('express').Router;
-const { makeCall, handleAttendance, welcome } = require('./handler');
+const { makeCall, handleAttendance, welcome, handleForwardedCall, handleVoiceMail } = require('./handler');
 
 const router = new Router();
 
@@ -11,7 +11,6 @@ router.post('/make-call', async (req, res) => {
 })
 
 router.post('/handle-gather', async (req, res) => {
-    console.log(req);
     res.type('text/xml');
     res.send(await handleAttendance(req.body.Digits))
 })
@@ -20,5 +19,19 @@ router.post('/welcome', (req, res) => {
     res.type('text/xml');
     res.send(welcome())
 })
+
+router.post('/handle-forward', (req, res) => {
+    res.type('text/xml');
+    res.send(handleForwardedCall(req.body.DialCallStatus))
+})
+
+router.post('/handle-voicemail', (req, res) => {
+    const recordingUrl = req.body.RecordingUrl;
+    if (recordingUrl) {
+        handleVoiceMail(recordingUrl);
+        return res.sendStatus(200);
+    }
+    return res.sendStatus(500);
+});
 
 module.exports = router;
