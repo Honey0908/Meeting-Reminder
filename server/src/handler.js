@@ -9,14 +9,14 @@ let meetingInfo;
 exports.makeCall = async (meetingDetails, to, from) => {
     meetingInfo = meetingDetails;
     try {
+        // call consists details including SID, state, AccountID etc.
         const call = await twilioClient.calls.create({
             url: `${config.server_url}/welcome`,
             to: to,
+            statusCallback: `${config.server_url}/call-status`,
             from: from || config.twilio_number,
         });
-
-        console.log(call);
-        return 'Outbound call initiated successfully!';
+        return call;
     } catch (error) {
         console.error('Error:', error);
         return error;
@@ -36,7 +36,6 @@ exports.welcome = () => {
 
 // handle user's input 
 exports.handleAttendance = (digit) => {
-    console.log("run" + digit);
     const options = {
         '1': this.confirmAttendance,
         '2': this.declineAttendance
@@ -59,7 +58,7 @@ exports.confirmAttendance = () => {
 // if user declines the attendance
 exports.declineAttendance = () => {
     const twiml = new VoiceResponse();
-    twiml.say('We are sorry that you cannot attend the meeting. Your call will be forwarded to the manager for further discussion. Please Hold on the line.');
+    twiml.say('We are sorry that you cannot attend the meeting. Your call will be forwarded to the manager for further discussion. Please Hold on the line. If user do not pick up the phone then record your response');
     const forward = twiml.dial({ action: '/handle-forward', method: 'POST' });
     forward.number(process.env.PROCESS_NUMBER);
     return twiml.toString();
@@ -76,11 +75,6 @@ exports.handleForwardedCall = (dialCallStatus) => {
     const voicemail = twiml.record({ action: '/handle-voicemail', method: 'POST', playBeep: true });
     twiml.hangup();
     return twiml.toString();
-}
-
-// handle recorded voiceMail 
-exports.handleVoiceMail = (recordingUrl) => {
-    console.log('Recorded Voicemail URL:', recordingUrl);
 }
 
 // invalid input (otherthan 1 or 2 key press)
