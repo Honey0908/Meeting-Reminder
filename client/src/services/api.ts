@@ -2,7 +2,6 @@ import axios from 'axios';
 import { FormDetails } from '../components/MeetingForm';
 
 const API_BASE_URL = import.meta.env.VITE_SERVER_URL; 
-console.log(API_BASE_URL);
 
 export const createCall = async (meetingDetails: FormDetails) => {
   try {
