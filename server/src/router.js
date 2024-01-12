@@ -9,12 +9,13 @@ function createRouter(io) {
         if (!req.body.meetingDetails || !req.body.to) {
             res.send('invalid Meeting details or Contact number');
         }
-        res.send(await makeCall(req.body.meetingDetails, req.body.to, req.body.from, res));
+        console.log(req.body);
+        res.send(await makeCall(req.body.meetingDetails, req.body.to, req.body.from));
     })
 
     router.post('/call-status', async (req, res) => {
         io.emit('callStatus', req.body.CallStatus);
-        res.send(await makeCall(req.body.meetingDetails, req.body.to, req.body.from, res));
+        res.send()
     })
 
     router.post('/handle-gather', async (req, res) => {
