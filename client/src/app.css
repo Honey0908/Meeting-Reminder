@@ -5,7 +5,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 .title {
@@ -48,4 +47,23 @@ form textarea {
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
+}
+
+.submit-button:disabled {
+  background-color: #59d47e;
+  cursor: unset;
+}
+
+.refresh-button-div {
+  width: 100%;
+  display: flex;
+}
+
+.refresh-button {
+  background-color: rgb(206, 206, 206);
+  border: none;
+  border-radius: 100%;
+  padding: 5px;
+  cursor: pointer;
+  margin: 0.8rem auto;
 }
