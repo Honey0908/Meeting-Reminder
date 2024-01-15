@@ -11,36 +11,38 @@ const App: React.FC = () => {
   const [attendance, setAttendance] = useState<boolean | undefined>(undefined);
   const [recordingUrl, setRecordingUrl] = useState("");
   const [callStatus, setCallStatus] = useState("");
+  const [callSid, setCallSid] = useState("");
 
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_SERVER_URL);
+    if (callSid) {
+      const socket = io(import.meta.env.VITE_SERVER_URL, { query: { callSid: callSid } });
 
-    socket.on('connect', () => {
-      console.log("connected");
-    });
+      socket.on('connect', () => {
+        console.log("connected");
+      });
 
-    socket.on('recordingUrl', (recordingUrl) => {
-      setRecordingUrl(recordingUrl);
-    });
+      socket.on('recordingUrl', (recordingUrl) => {
+        setRecordingUrl(recordingUrl);
+      });
 
-    socket.on('attendance', (attendance) => {
-      setAttendance(attendance);
-    });
+      socket.on('attendance', (attendance) => {
+        setAttendance(attendance);
+      });
 
-    socket.on('callStatus', (callStatus) => {
-      console.log("callStatus");
-      setCallStatus(callStatus);
-    });
-
-    return () => {
-      socket?.disconnect();
-    };
-  }, []); 
+      socket.on('callStatus', (callStatus) => {
+        setCallStatus(callStatus);
+      });
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [callSid]);
 
   const handleFormSubmit = async (formData: FormDetails) => {
     setLoading(true);
     const response = await createCall(formData);
     if (response?.sid) {
+      setCallSid(response?.sid)
       setCallInitiated(true);
     }
     setLoading(false);

@@ -21,9 +21,5 @@ const io = socketio(server, {
     }
 })
 
-io.on('connection', (socket) => {
-    console.log('New connection');
-    const router = createRouter(socket);
-    app.use('/', router);
-})
-
+const router = createRouter(io);
+app.use('/', router);
