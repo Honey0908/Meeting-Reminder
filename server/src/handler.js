@@ -8,7 +8,6 @@ let meetingInfo;
 // create outbound call
 exports.makeCall = async (options) => {
     meetingInfo = { ...options }
-    console.log(options);
     try {
         // call consists details including SID, state, AccountID etc.
         const call = await twilioClient.calls.create({
