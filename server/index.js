@@ -11,7 +11,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// app.use('/', router);
 const server = app.listen(port, () => {
     console.log('Server is running on port:', port);
 });
@@ -24,9 +23,7 @@ const io = socketio(server, {
 
 io.on('connection', (socket) => {
     console.log('New connection');
+    const router = createRouter(socket);
+    app.use('/', router);
 })
 
-// Create a router with the passed io instance
-const router = createRouter(io);
-
-app.use('/', router);

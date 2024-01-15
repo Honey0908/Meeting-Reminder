@@ -6,15 +6,16 @@ const twilioClient = twilio(config.twilio_account_SID, config.twilio_auth_token)
 let meetingInfo;
 
 // create outbound call
-exports.makeCall = async (meetingDetails, to, from) => {
-    meetingInfo = meetingDetails;
+exports.makeCall = async (options) => {
+    meetingInfo = { ...options }
+    console.log(options);
     try {
         // call consists details including SID, state, AccountID etc.
         const call = await twilioClient.calls.create({
             url: `${config.server_url}/welcome`,
-            to: to,
+            to: options?.to,
             statusCallback: `${config.server_url}/call-status`,
-            from: from || config.twilio_number,
+            from: options?.from || config.twilio_number,
         });
         return call;
     } catch (error) {
@@ -26,7 +27,7 @@ exports.makeCall = async (meetingDetails, to, from) => {
 // first twiml response to user
 exports.welcome = () => {
     const twiml = new VoiceResponse();
-    twiml.say(meetingInfo);
+    twiml.say(meetingInfo?.meetingDetails);
     const gatherI = twiml.gather({ input: "dtmf", numDigits: 1, actionOnEmptyResult: true, action: '/handle-gather', method: 'POST', timeout: 10 })
     gatherI.say('To confirm your attendance, press 1. To decline, press 2.');
 
@@ -60,7 +61,7 @@ exports.declineAttendance = () => {
     const twiml = new VoiceResponse();
     twiml.say('We are sorry that you cannot attend the meeting. Your call will be forwarded to the manager for further discussion. Please Hold on the line. If user do not pick up the phone then record your response');
     const forward = twiml.dial({ action: '/handle-forward', method: 'POST' });
-    forward.number(process.env.PROCESS_NUMBER);
+    forward.number(meetingInfo?.host_phoneNo);
     return twiml.toString();
 }
 
