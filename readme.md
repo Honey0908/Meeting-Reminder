@@ -10,9 +10,6 @@
   - [Run the Project](#run-the-project)
 - [Project Structure](#project-structure)
 - [Twilio Integration](#twilio-integration)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
@@ -106,7 +103,7 @@ Now, you're ready to run the Meeting Reminder Project:
    npm run dev
    ```
 
-## Folder Structure
+## Project Structure
 
 ```bash
 ├── client
