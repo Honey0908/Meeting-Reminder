@@ -1,0 +1,69 @@
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+  color: rgb(194, 4, 4);
+  margin-block: 1.5rem;
+}
+
+.meeting-form {
+  margin: 0 auto;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+form input,
+form textarea {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-hint {
+  display: block;
+  font-size: 12px;
+  margin-block: 0.5rem;
+  color: #888;
+}
+
+.submit-button {
+  background-color: #08a838;
+  color: #fff;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.submit-button:disabled {
+  background-color: #59d47e;
+  cursor: unset;
+}
+
+.refresh-button-div {
+  width: 100%;
+  display: flex;
+}
+
+.refresh-button {
+  background-color: rgb(206, 206, 206);
+  border: none;
+  border-radius: 100%;
+  padding: 5px;
+  cursor: pointer;
+  margin: 0.8rem auto;
+}
